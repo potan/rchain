@@ -471,6 +471,8 @@ class MultiParentCasperImpl[F[_]: Sync: Concurrent: Log: Time: SafetyOracle: Las
 
 object MultiParentCasperImpl {
   def addedEvent(block: BlockMessage): RChainEvent = {
+    import scala.concurrent.duration._
+    scala.concurrent.Await.result(BlockGraph.addBlock(block), 1.seconds)
     val (blockHash, parents, justifications, deployIds, creator, seqNum) = blockEvent(block)
     RChainEvent.blockAdded(
       blockHash,

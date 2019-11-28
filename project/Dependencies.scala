@@ -81,6 +81,7 @@ object Dependencies {
   val logstashLogback     = "net.logstash.logback"        % "logstash-logback-encoder"  % "5.3"
   val slf4j               = "org.slf4j"                   % "slf4j-api"                 % slf4jVersion
   val julToSlf4j          = "org.slf4j"                   % "jul-to-slf4j"              % slf4jVersion
+  val neotypes            = "com.dimafeng"               %% "neotypes"                  % "0.4.0" //"0.13.0"
   // format: on
 
   val overrides = Seq(
@@ -130,5 +131,5 @@ object Dependencies {
     http4sDependencies ++ circeDependencies
 
   val commonDependencies: Seq[ModuleID] =
-    logging ++ testing :+ kindProjector :+ macroParadise
+    logging ++ testing :+ kindProjector :+ macroParadise :+ neotypes
 }
