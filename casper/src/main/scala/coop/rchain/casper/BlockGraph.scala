@@ -16,13 +16,17 @@ object BlockGraph {
   def addBlockQuery(b: BlockMessage): String = {
     val cb =
       s"""MERGE (b: Block {id:"${b.blockHash.base16String}", creater:"${b.sender.base16String}", seqNum:${b.seqNum}}) """
-    b.header.parentsHashList
+    val withParents = b.header.parentsHashList
       .map(_.base16String)
       .zipWithIndex
       .foldLeft(cb)(
         (q, p) =>
           q ++ s"""MERGE (b${p._2}: Block {id:"${p._1}"}) CREATE (b${p._2}) <-[:PARENT]- (b) """
       )
+    b.justifications.zipWithIndex.foldLeft(withParents)(
+      (q, j) =>
+        q ++ s"""MERGE (v${j._2}: Validator {id:"${j._1.validator.base16String}"}) CREATE (b) <-[:Justificate]- (v${j._2})) """
+    )
   }
 
   val driver = GraphDatabase.driver /*[Future]*/ (
