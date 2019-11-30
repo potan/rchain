@@ -31,7 +31,7 @@ object BlockGraph {
 
   val driver = GraphDatabase.driver /*[Future]*/ (
     "bolt://localhost:7687",
-    AuthTokens.basic("neo4j", "Ada4Rho")
+    AuthTokens.basic("neo4j", "neo4j")
   ).asScala[Future]
 
   def addBlock(b: BlockMessage) = {
